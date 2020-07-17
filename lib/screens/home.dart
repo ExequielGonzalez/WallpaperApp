@@ -9,32 +9,45 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  PhotosModel photo;
+  Future<PhotosModel> photo;
 
   void getPhoto() async {
-    photo = await WebImage.getTrendingWallpaper();
+//    photo = WebImage.getTrendingWallpaper();
+    photo = WebImage.getSpecificWallpaper('tiger');
   }
 
   @override
   void initState() {
-    photo.url =
-        'https://images.unsplash.com/photo-1532264523420-881a47db012d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9';
-    getPhoto();
     super.initState();
+//    photo = PhotosModel();
+//    photo.url =
+//        'https://images.unsplash.com/photo-1532264523420-881a47db012d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9';
+    getPhoto();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: CachedNetworkImage(
-        progressIndicatorBuilder: (context, url, progress) =>
-            CircularProgressIndicator(
-          value: progress.progress,
-        ),
-        imageUrl: photo.url,
-        fit: BoxFit.cover,
-        filterQuality: FilterQuality.high,
-      ),
+      child: FutureBuilder(
+          future: photo,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return CachedNetworkImage(
+                progressIndicatorBuilder: (context, url, progress) =>
+                    CircularProgressIndicator(
+                  value: progress.progress,
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                imageUrl: snapshot.data.src.original,
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.high,
+              );
+            } else if (snapshot.hasError) {
+              print('${snapshot.error}');
+              return Text('${snapshot.error}');
+            } else
+              return CircularProgressIndicator();
+          }),
     );
   }
 }
