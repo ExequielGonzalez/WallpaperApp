@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallpaper/widgets/text_url.dart';
 
 import '../constants.dart';
 
@@ -48,18 +49,12 @@ class InfoDialog extends StatelessWidget {
                 'Photographer url',
                 style: kDialogSubTitleStyle,
               ),
-              Text(
-                '$photographerURL',
-                style: kDialogContentStyle,
-              ),
+              TextUrl(url: photographerURL),
               Text(
                 'More info',
                 style: kDialogSubTitleStyle,
               ),
-              Text(
-                '$url',
-                style: kDialogContentStyle,
-              ),
+              TextUrl(url: url),
             ],
           ),
         ),
