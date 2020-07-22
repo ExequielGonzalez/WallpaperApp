@@ -3,6 +3,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:wallpaper/constants.dart';
 import 'package:wallpaper/services/images.dart';
 import 'package:wallpaper/services/web_images.dart' as WebImage;
+import 'package:wallpaper/widgets/InfoDialog.dart';
+import 'package:wallpaper/widgets/MyButton.dart';
+import 'package:wallpaper/services/set_wallpaper.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,6 +14,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Future<PhotosModel> photo;
+  String photographer;
+  String photographerURL;
+  String photoUrl;
+  String urlToDownload;
+  int photoId;
 
   void getPhoto() async {
 //    photo = WebImage.getTrendingWallpaper();
@@ -41,6 +49,11 @@ class _HomeState extends State<Home> {
               future: photo,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  photographer = snapshot.data.photographer;
+                  photographerURL = snapshot.data.photographerUrl;
+                  photoUrl = snapshot.data.url;
+                  urlToDownload = snapshot.data.src.portrait;
+                  photoId = snapshot.data.id;
                   return CachedNetworkImage(
                     progressIndicatorBuilder: (context, url, progress) =>
                         CircularProgressIndicator(
@@ -75,40 +88,29 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.blue.shade200,
                 iconColor: Colors.black,
                 icon: Icons.save_alt,
+                onTap: () {
+                  SetWallpaper.setWallpaper(urlToDownload, photoId);
+                },
               ),
               MyButton(
                 backgroundColor: Colors.white,
                 iconColor: Colors.black,
                 icon: Icons.info,
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => InfoDialog(
+                      photographer: photographer,
+                      photographerURL: photographerURL,
+                      url: photoUrl,
+                    ),
+                  );
+                },
               ),
             ],
           ),
         )
       ],
-    );
-  }
-}
-
-class MyButton extends StatelessWidget {
-  final Color backgroundColor;
-  final Color iconColor;
-  final IconData icon;
-  final Function onTap;
-  MyButton({this.backgroundColor, this.iconColor, this.icon, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: onTap,
-      elevation: 2.0,
-      fillColor: backgroundColor,
-      child: Icon(
-        icon,
-        size: 25.0,
-        color: iconColor,
-      ),
-      padding: EdgeInsets.all(10.0),
-      shape: CircleBorder(),
     );
   }
 }

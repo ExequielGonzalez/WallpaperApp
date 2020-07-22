@@ -27,6 +27,10 @@ dev_dependencies:
     sdk: flutter
   http: ^0.12.1
   cached_network_image: ^2.0.0
+  dio: ^3.0.9
+  path_provider: ^1.6.11
+  permission_handler: ^5.0.1+1
+  wallpaperplugin: ^0.1.1
 
 
 flutter:
