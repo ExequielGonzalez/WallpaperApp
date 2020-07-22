@@ -1,5 +1,7 @@
 class PhotosModel {
   int id;
+  int width;
+  int height;
   String url;
   String photographer;
   String photographerUrl;
@@ -8,6 +10,8 @@ class PhotosModel {
 
   PhotosModel(
       {this.id,
+      this.width,
+      this.height,
       this.url,
       this.photographer,
       this.photographerId,
@@ -17,6 +21,8 @@ class PhotosModel {
   factory PhotosModel.fromMap(Map<String, dynamic> parsedJson) {
     return PhotosModel(
         id: parsedJson["id"],
+        width: parsedJson["width"],
+        height: parsedJson["height"],
         url: parsedJson["url"],
         photographer: parsedJson["photographer"],
         photographerId: parsedJson["photographer_id"],

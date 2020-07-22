@@ -1,18 +1,15 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:wallpaper/constants.dart';
+import 'package:wallpaper/services/banned_images.dart';
 import 'package:wallpaper/services/images.dart';
-import 'package:wallpaper/services/launch_url.dart';
 import 'package:wallpaper/services/web_images.dart' as WebImage;
 import 'package:wallpaper/widgets/InfoDialog.dart';
 import 'package:wallpaper/widgets/MyButton.dart';
 import 'package:wallpaper/services/set_wallpaper.dart';
 import 'package:wallpaper/widgets/pexel_banner.dart';
-import 'package:wallpaper/widgets/text_url.dart';
-
-import 'package:palette_generator/palette_generator.dart';
+import 'package:wallpaper/services/date.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -21,6 +18,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Future<PhotosModel> photo;
+
+  String lastImage;
+  int photoWidth;
+  int photoHeight;
   String photographer;
   String photographerURL;
   String photoUrl;
@@ -29,7 +30,18 @@ class _HomeState extends State<Home> {
 
   void getPhoto() async {
 //    photo = WebImage.getTrendingWallpaper();
-    photo = WebImage.getSpecificWallpaper(kTopic);
+    Date date = Date();
+    if (date.isNewDay()) {
+      setState(() {
+        photo = WebImage.getSpecificWallpaper(topic: kTopic);
+      });
+    } else {
+      BannedImages bannedImages = BannedImages();
+      setState(() {
+        lastImage = bannedImages.lastBanned();
+        photo = WebImage.getSpecificWallpaper(topic: kTopic, page: lastImage);
+      });
+    }
   }
 
   double getHeight() => MediaQuery.of(context).size.height;
@@ -55,6 +67,8 @@ class _HomeState extends State<Home> {
                 future: photo,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    photoWidth = snapshot.data.width;
+                    photoHeight = snapshot.data.height;
                     photographer = snapshot.data.photographer;
                     photographerURL = snapshot.data.photographerUrl;
                     photoUrl = snapshot.data.url;
@@ -78,8 +92,8 @@ class _HomeState extends State<Home> {
                 }),
           ),
           Positioned(
-            left: getWidth() / 10,
-            right: getWidth() / 10,
+            left: getWidth() / 15,
+            right: getWidth() / 15,
             bottom: 16 * getHeight() / 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -87,16 +101,20 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 MyButton(
                   backgroundColor: Colors.white,
-                  icon: Icons.settings,
+                  icon: Icons.refresh,
                   iconColor: Colors.black,
                   onTap: () {
-                    LaunchUrl.launchInBrowser(photoUrl);
+                    getPhoto();
                   },
                 ),
                 MyButton(
-                  backgroundColor: Colors.blue.shade200,
+                  backgroundColor: Colors.white,
+                  icon: Icons.share,
                   iconColor: Colors.black,
-                  icon: Icons.save_alt,
+                ),
+                MyButton(
+                  backgroundColor: Colors.white,
+                  text: 'SET',
                   onTap: () {
                     SetWallpaper.setWallpaper(urlToDownload, photoId);
                   },

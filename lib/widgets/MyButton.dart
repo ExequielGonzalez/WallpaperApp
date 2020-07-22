@@ -5,7 +5,9 @@ class MyButton extends StatelessWidget {
   final Color iconColor;
   final IconData icon;
   final Function onTap;
-  MyButton({this.backgroundColor, this.iconColor, this.icon, this.onTap});
+  final String text;
+  MyButton(
+      {this.backgroundColor, this.iconColor, this.icon, this.onTap, this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +15,19 @@ class MyButton extends StatelessWidget {
       onPressed: onTap,
       elevation: 2.0,
       fillColor: backgroundColor,
-      child: Icon(
-        icon,
-        size: 25.0,
-        color: iconColor,
-      ),
+      child: text == null
+          ? Icon(
+              icon,
+              size: 25.0,
+              color: iconColor,
+            )
+          : Text(
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
+            ),
       padding: EdgeInsets.all(10.0),
       shape: CircleBorder(),
     );

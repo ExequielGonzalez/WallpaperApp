@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:wallpaper/constants.dart';
+import 'package:wallpaper/services/banned_images.dart';
 import 'dart:convert';
 import 'package:wallpaper/services/images.dart';
 import 'dart:math';
@@ -26,9 +27,9 @@ Future<PhotosModel> getTrendingWallpaper() async {
   return photo;
 }
 
-Future<PhotosModel> getSpecificWallpaper(String topic) async {
+Future<PhotosModel> getSpecificWallpaper({String topic, String page}) async {
   PhotosModel photo;
-  String page = getRandomNumber(kTotalPhotos).toString();
+  if (page == null) page = getRandomNumber(kTotalPhotos).toString();
   await http.get(
       "https://api.pexels.com/v1/search?query=$topic&per_page=1&page=$page",
       headers: {"Authorization": kAPI}).then((value) {
@@ -51,5 +52,11 @@ Future<PhotosModel> getSpecificWallpaper(String topic) async {
 }
 
 int getRandomNumber(int range) {
-  return Random().nextInt(range) + 1;
+  BannedImages bannedImages = BannedImages();
+  int newImage = Random().nextInt(range) + 1;
+  if (bannedImages.isBanned(newImage)) {
+    newImage = getRandomNumber(range);
+  }
+  bannedImages.banImage(newImage);
+  return newImage;
 }
