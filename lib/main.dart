@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallpaper/screens/home.dart';
+import 'package:wallpaper/screens/starting.dart';
 
 void main() => runApp(Wallpaper());
 
@@ -10,7 +11,8 @@ class Wallpaper extends StatelessWidget {
       title: 'Wallpaper',
       initialRoute: '/',
       routes: {
-        '/': (context) => Home(),
+        '/home': (context) => Home(),
+        '/': (context) => Starting(),
       },
     );
   }

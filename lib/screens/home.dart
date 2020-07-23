@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:wallpaper/constants.dart';
 import 'package:wallpaper/services/banned_images.dart';
+import 'package:wallpaper/services/can_new_photo.dart';
 import 'package:wallpaper/services/images.dart';
+import 'package:wallpaper/services/shared_preferences.dart';
 import 'package:wallpaper/services/web_images.dart' as WebImage;
 import 'package:wallpaper/widgets/InfoDialog.dart';
 import 'package:wallpaper/widgets/MyButton.dart';
@@ -36,11 +38,25 @@ class _HomeState extends State<Home> {
         photo = WebImage.getSpecificWallpaper(topic: kTopic);
       });
     } else {
-      BannedImages bannedImages = BannedImages();
-      setState(() {
-        lastImage = bannedImages.lastBanned();
-        photo = WebImage.getSpecificWallpaper(topic: kTopic, page: lastImage);
-      });
+      CanNewPhoto canNewPhoto = CanNewPhoto();
+      if (canNewPhoto.canGetNewPhoto()) {
+        print(
+            'This is not a new day, but also you can already get ${canNewPhoto.cantNewPhotos} awesome wallpapers...');
+
+        setState(() {
+          photo = WebImage.getSpecificWallpaper(topic: kTopic);
+        });
+      } else {
+        BannedImages bannedImages = BannedImages();
+        print('this is not a new day...');
+        setState(() {
+          lastImage = bannedImages.lastBanned();
+          (photo == null)
+              ? photo =
+                  WebImage.getSpecificWallpaper(topic: kTopic, page: lastImage)
+              : null; //the idea is do nothing if a wallpaper is already loaded.
+        });
+      }
     }
   }
 
