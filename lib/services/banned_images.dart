@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:wallpaper/constants.dart';
 import 'package:wallpaper/services/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,7 +26,7 @@ class BannedImages {
   void setSharedPreferences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 //    sharedPreferences.remove('banned');
-    if (!sharedPreferences.containsKey('banned')) {
+    if (!sharedPreferences.containsKey(kKeyBanned)) {
       print('Creando "banned" en sharedPreferences');
       banImage(515);
       banImage(1667);
@@ -36,6 +37,10 @@ class BannedImages {
       banImage(2037);
       banImage(2072);
       banImage(1428);
+      banImage(2000);
+      banImage(603);
+      banImage(1105);
+
       banImage(1);
 
       saveListInDB();
@@ -46,7 +51,7 @@ class BannedImages {
   readListFromDB() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    List<String> mList = (prefs.getStringList("banned") ?? List<String>());
+    List<String> mList = (prefs.getStringList(kKeyBanned) ?? List<String>());
 
     _bannedImages = mList.map((i) => int.parse(i)).toList();
 
@@ -55,7 +60,7 @@ class BannedImages {
 
   saveListInDB() async {
     SharedPref sharedPref = SharedPref();
-    sharedPref.saveListInt('banned', _bannedImages);
+    sharedPref.saveListInt(kKeyBanned, _bannedImages);
   }
 
   void banImage(int img) async {

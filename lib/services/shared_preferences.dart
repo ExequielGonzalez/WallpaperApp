@@ -2,6 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:wallpaper/constants.dart';
+
 class SharedPref {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SharedPreferences _sharedPreferences;
@@ -85,7 +87,7 @@ class SharedPref {
     List<String> stringsList = value.map((i) => i.toString()).toList();
 
 // store your string list in shared prefs
-    prefs.setStringList("banned", stringsList);
+    prefs.setStringList(kKeyBanned, stringsList);
     print(stringsList);
   }
 

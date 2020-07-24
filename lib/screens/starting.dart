@@ -65,12 +65,12 @@ class _StartingState extends State<Starting> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     SharedPref sharedPref = SharedPref();
 
-//    sharedPreferences.remove('banned');
-//    sharedPreferences.remove('cantNewPhotos');
-    //    sharedPreferences.remove('date');
+//    sharedPreferences.remove(kKeyBanned);
+//    sharedPreferences.remove(kKeyNewPhotos);
+//    sharedPreferences.remove(kKeyDate);
 
-    if (!sharedPreferences.containsKey('cantNewPhotos')) {
-      sharedPref.addIntToSharedPreference('cantNewPhotos', kCantNewPhotos);
+    if (!sharedPreferences.containsKey(kKeyNewPhotos)) {
+      sharedPref.addIntToSharedPreference(kKeyNewPhotos, kCantNewPhotos);
     }
   }
 }

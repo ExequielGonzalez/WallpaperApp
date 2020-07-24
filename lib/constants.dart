@@ -8,6 +8,10 @@ String kTextShare =
     """Hey, try this app! You can use the next code to see the same wallpaper as me.
 You'll love it! """;
 
+String kKeyNewPhotos = 'cantNewPhotos';
+String kKeyDate = 'date';
+String kKeyBanned = 'banned';
+
 BoxDecoration kBackgroundGradient = BoxDecoration(
   gradient: LinearGradient(
       begin: Alignment.topLeft,

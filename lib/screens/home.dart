@@ -12,6 +12,7 @@ import 'package:wallpaper/services/set_wallpaper.dart';
 import 'package:wallpaper/widgets/error_404_widget.dart';
 import 'package:wallpaper/widgets/pexel_banner.dart';
 import 'package:wallpaper/services/date.dart';
+import 'package:wallpaper/widgets/reload_dialog.dart';
 import 'package:wallpaper/widgets/share_dialog.dart';
 
 class Home extends StatefulWidget {
@@ -139,7 +140,19 @@ class _HomeState extends State<Home> {
                   icon: Icons.refresh,
                   iconColor: Colors.black,
                   onTap: () {
-                    getPhoto();
+                    CanNewPhoto canNewPhoto = CanNewPhoto();
+                    Date date = Date();
+                    (date.isNewDay())
+                        ? getPhoto()
+                        : showDialog(
+                            context: context,
+                            builder: (context) => ReloadDialog(
+                              cantPhotos: canNewPhoto.cantNewPhotos,
+                              reloadPhoto: () {
+                                getPhoto();
+                              },
+                            ),
+                          );
                   },
                 ),
                 MyButton(

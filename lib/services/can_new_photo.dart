@@ -1,3 +1,4 @@
+import 'package:wallpaper/constants.dart';
 import 'package:wallpaper/services/shared_preferences.dart';
 
 class CanNewPhoto {
@@ -15,7 +16,7 @@ class CanNewPhoto {
 
   int _cantNewPhotos;
 
-  int get cantNewPhotos => _cantNewPhotos + 1;
+  int get cantNewPhotos => _cantNewPhotos;
 
   bool canGetNewPhoto() {
     if (_cantNewPhotos > 0) {
@@ -28,12 +29,18 @@ class CanNewPhoto {
   getCantNewPhotos() async {
     SharedPref sharedPref = SharedPref();
     _cantNewPhotos =
-        await sharedPref.getIntValuesSharedPreference('cantNewPhotos');
+        await sharedPref.getIntValuesSharedPreference(kKeyNewPhotos);
   }
 
   void _reduceCantPhotos() async {
     _cantNewPhotos -= 1;
     SharedPref sharedPref = SharedPref();
-    sharedPref.addIntToSharedPreference('cantNewPhotos', _cantNewPhotos);
+    sharedPref.addIntToSharedPreference(kKeyNewPhotos, _cantNewPhotos);
+  }
+
+  void addCantPhotos() async {
+    _cantNewPhotos -= 1;
+    SharedPref sharedPref = SharedPref();
+    sharedPref.addIntToSharedPreference(kKeyNewPhotos, _cantNewPhotos);
   }
 }

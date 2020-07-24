@@ -2,6 +2,8 @@ import 'package:date_format/date_format.dart';
 import 'package:wallpaper/services/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants.dart';
+
 class Date {
   //Singleton
   String _last;
@@ -21,7 +23,7 @@ class Date {
     if (today != _last) {
       _last = today;
       SharedPref sharedPref = SharedPref();
-      sharedPref.addStringToSharedPreference('date', _last);
+      sharedPref.addStringToSharedPreference(kKeyDate, _last);
       return true;
     }
     return false;
@@ -45,10 +47,10 @@ class Date {
     SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance(); //TODO:clean code
 
-    if (!sharedPreferences.containsKey('date')) {
+    if (!sharedPreferences.containsKey(kKeyDate)) {
       String today = convertDateToString();
-      sharedPref.addStringToSharedPreference('date', today);
+      sharedPref.addStringToSharedPreference(kKeyDate, today);
     }
-    _last = await sharedPref.getStringValuesSharedPreference('date');
+    _last = await sharedPref.getStringValuesSharedPreference(kKeyDate);
   }
 }
