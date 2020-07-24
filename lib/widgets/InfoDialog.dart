@@ -30,9 +30,11 @@ class InfoDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'Information',
-                style: kDialogTitleStyle,
+              Center(
+                child: Text(
+                  'Information',
+                  style: kDialogTitleStyle,
+                ),
               ),
               SizedBox(
                 height: 20,

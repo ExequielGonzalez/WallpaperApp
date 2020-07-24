@@ -5,13 +5,14 @@ import 'package:wallpaper/constants.dart';
 import 'package:wallpaper/services/banned_images.dart';
 import 'package:wallpaper/services/can_new_photo.dart';
 import 'package:wallpaper/services/images.dart';
-import 'package:wallpaper/services/shared_preferences.dart';
 import 'package:wallpaper/services/web_images.dart' as WebImage;
 import 'package:wallpaper/widgets/InfoDialog.dart';
 import 'package:wallpaper/widgets/MyButton.dart';
 import 'package:wallpaper/services/set_wallpaper.dart';
+import 'package:wallpaper/widgets/error_404_widget.dart';
 import 'package:wallpaper/widgets/pexel_banner.dart';
 import 'package:wallpaper/services/date.dart';
+import 'package:wallpaper/widgets/share_dialog.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -19,6 +20,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController textEditingController =
+      TextEditingController(); //to reach the code enter in the share screen
   Future<PhotosModel> photo;
 
   String lastImage;
@@ -35,7 +38,7 @@ class _HomeState extends State<Home> {
     Date date = Date();
     if (date.isNewDay()) {
       setState(() {
-        photo = WebImage.getSpecificWallpaper(topic: kTopic);
+        photo = WebImage.getSpecificWallpaperByPage(topic: kTopic);
       });
     } else {
       CanNewPhoto canNewPhoto = CanNewPhoto();
@@ -44,7 +47,7 @@ class _HomeState extends State<Home> {
             'This is not a new day, but also you can already get ${canNewPhoto.cantNewPhotos} awesome wallpapers...');
 
         setState(() {
-          photo = WebImage.getSpecificWallpaper(topic: kTopic);
+          photo = WebImage.getSpecificWallpaperByPage(topic: kTopic);
         });
       } else {
         BannedImages bannedImages = BannedImages();
@@ -52,11 +55,21 @@ class _HomeState extends State<Home> {
         setState(() {
           lastImage = bannedImages.lastBanned();
           (photo == null)
-              ? photo =
-                  WebImage.getSpecificWallpaper(topic: kTopic, page: lastImage)
+              ? photo = WebImage.getSpecificWallpaperByPage(
+                  topic: kTopic, page: lastImage)
               : null; //the idea is do nothing if a wallpaper is already loaded.
         });
       }
+    }
+  }
+
+  void getPhotoById(String id) async {
+    try {
+      setState(() {
+        photo = WebImage.getSpecificWallpaperById(id: id);
+      });
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -99,10 +112,16 @@ class _HomeState extends State<Home> {
                       imageUrl: snapshot.data.src.portrait,
                       fit: BoxFit.cover,
                       filterQuality: FilterQuality.high,
+                      useOldImageOnUrlChange: true,
                     );
                   } else if (snapshot.hasError) {
                     print('${snapshot.error}');
-                    return Text('${snapshot.error}');
+                    return Error404Widget(restartFunction: () {
+                      setState(() {
+                        photo = WebImage.getSpecificWallpaperByPage(
+                            topic: kTopic, page: lastImage);
+                      });
+                    });
                   } else
                     return CircularProgressIndicator();
                 }),
@@ -127,6 +146,20 @@ class _HomeState extends State<Home> {
                   backgroundColor: Colors.white,
                   icon: Icons.share,
                   iconColor: Colors.black,
+                  onTap: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => ShareDialog(
+                        photoId: photoId,
+                        controller: textEditingController,
+                      ),
+                    );
+                    if (textEditingController.text.isNotEmpty) {
+                      print(textEditingController.text);
+                      getPhotoById(textEditingController.text);
+                      textEditingController.clear();
+                    }
+                  },
                 ),
                 MyButton(
                   backgroundColor: Colors.white,

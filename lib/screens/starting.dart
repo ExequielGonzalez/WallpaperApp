@@ -17,25 +17,29 @@ class _StartingState extends State<Starting> {
   Widget build(BuildContext context) {
     return Center(
       child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SpinKitFadingCube(
+//        backgroundColor: Colors.black,
+
+        body: Container(
+          decoration: kBackgroundGradient,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SpinKitFadingCube(
 //              color: Theme.of(context).accentColor,
-              color: Colors.white,
-              size: 50.0,
-            ),
-            SizedBox(height: 30),
-            Text(
-              "Starting...",
-              style: TextStyle(
-                fontSize: 30,
-                letterSpacing: 2,
                 color: Colors.white,
+                size: 50.0,
               ),
-            )
-          ],
+              SizedBox(height: 30),
+              Text(
+                "Starting...",
+                style: TextStyle(
+                  fontSize: 30,
+                  letterSpacing: 2,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

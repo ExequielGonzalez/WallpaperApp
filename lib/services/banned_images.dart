@@ -36,6 +36,7 @@ class BannedImages {
       banImage(2037);
       banImage(2072);
       banImage(1428);
+      banImage(1);
 
       saveListInDB();
     }
