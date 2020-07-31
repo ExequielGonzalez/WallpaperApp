@@ -11,6 +11,7 @@ class CanNewPhoto {
   }
 
   CanNewPhoto._privateConstructor() {
+    print('creando el singleton de cantidad de fotos');
     getCantNewPhotos();
   }
 

@@ -15,6 +15,7 @@ class Date {
   }
 
   Date._privateConstructor() {
+    print('creando new DateSingleton');
     readDateFromDB();
   }
 
@@ -48,9 +49,12 @@ class Date {
         await SharedPreferences.getInstance(); //TODO:clean code
 
     if (!sharedPreferences.containsKey(kKeyDate)) {
+      print('creando key $kKeyDate en DB');
       String today = convertDateToString();
       sharedPref.addStringToSharedPreference(kKeyDate, today);
     }
+
     _last = await sharedPref.getStringValuesSharedPreference(kKeyDate);
+    print('la ultima foto es de $_last');
   }
 }

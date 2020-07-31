@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 String kAPI = '563492ad6f917000010000017070ee497ec64313a7552a5527b4c75f ';
 int kTotalPhotos = 2089;
 String kTopic = 'cat';
-int kCantNewPhotos = 3;
+int kCantNewPhotos = 300;
 String kTextShare =
     """Hey, try this app! You can use the next code to see the same wallpaper as me.
 You'll love it! """;
@@ -11,6 +11,7 @@ You'll love it! """;
 String kKeyNewPhotos = 'cantNewPhotos';
 String kKeyDate = 'date';
 String kKeyBanned = 'banned';
+String kKeyPhoto = 'photo';
 
 BoxDecoration kBackgroundGradient = BoxDecoration(
   gradient: LinearGradient(

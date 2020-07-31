@@ -4,10 +4,11 @@ import '../constants.dart';
 
 class Error404Widget extends StatelessWidget {
   final Function restartFunction;
+  final int delay;
 
-  Error404Widget({this.restartFunction}) {
-    Future.delayed(const Duration(seconds: 1), () {
-      //after 1 second,the home page is recharged
+  Error404Widget({this.restartFunction, this.delay = 1}) {
+    Future.delayed(Duration(seconds: delay), () {
+      //after 'delay' second,the home page is recharged
       restartFunction();
     });
   }

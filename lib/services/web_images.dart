@@ -18,7 +18,7 @@ Future<PhotosModel> getTrendingWallpaper() async {
       jsonData["photos"].forEach((element) {
         //print(element);
 //      return PhotosModel.fromMap(element);
-        photo = PhotosModel.fromMap(element);
+        photo = PhotosModel.fromJson(element);
       });
     } else
       throw Exception(
@@ -27,8 +27,9 @@ Future<PhotosModel> getTrendingWallpaper() async {
   return photo;
 }
 
-Future<PhotosModel> getSpecificWallpaperByPage(
+Future<Map<String, dynamic>> getSpecificWallpaperByPage(
     {String topic, String page}) async {
+  Map<String, dynamic> photoAsString;
   PhotosModel photo;
   if (page == null) page = getRandomNumber(kTotalPhotos).toString();
   await http.get(
@@ -41,20 +42,25 @@ Future<PhotosModel> getSpecificWallpaperByPage(
       Map<String, dynamic> jsonData = jsonDecode(value.body);
       print(jsonData['total_results']);
       jsonData["photos"].forEach((element) {
-        //print(element);
+//        print('esto guardaria');
+
+        photoAsString = element;
+//        print(element);
+//        return element;
 //      return PhotosModel.fromMap(element);
-        photo = PhotosModel.fromMap(element);
+//        photo = PhotosModel.fromMap(element);
       });
     } else
       throw Exception(
           'Unable to get an image from the server. Check your internet connection');
   });
-  return photo;
+//  return photo;
+  return photoAsString;
 }
 
-Future<PhotosModel> getSpecificWallpaperById({String id}) async {
+Future<Map<String, dynamic>> getSpecificWallpaperById({String id}) async {
   PhotosModel photo;
-
+  Map<String, dynamic> photoAsString;
   await http.get("https://api.pexels.com/v1/photos/$id",
       headers: {"Authorization": kAPI}).then((value) {
     print(value.statusCode);
@@ -62,12 +68,12 @@ Future<PhotosModel> getSpecificWallpaperById({String id}) async {
 
     if (value.statusCode == 200) {
       Map<String, dynamic> jsonData = jsonDecode(value.body);
-      photo = PhotosModel.fromMap(jsonData);
+      photoAsString = jsonData;
     } else
       throw Exception(
           'Unable to get an image from the server. Check your internet connection');
   });
-  return photo;
+  return photoAsString;
 }
 
 int getRandomNumber(int range) {

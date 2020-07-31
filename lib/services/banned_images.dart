@@ -14,6 +14,7 @@ class BannedImages {
   }
 
   BannedImages._privateConstructor() {
+    print('creando banned images');
     _bannedImages = [];
 
 //    while (_bannedImages.isEmpty) {
@@ -27,7 +28,7 @@ class BannedImages {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 //    sharedPreferences.remove('banned');
     if (!sharedPreferences.containsKey(kKeyBanned)) {
-      print('Creando "banned" en sharedPreferences');
+      print('creando key $kKeyBanned en DB');
       banImage(515);
       banImage(1667);
       banImage(1848);
@@ -40,12 +41,17 @@ class BannedImages {
       banImage(2000);
       banImage(603);
       banImage(1105);
+      banImage(325);
+      banImage(1524);
+      banImage(839);
+      banImage(99);
+      banImage(865);
 
       banImage(1);
 
       saveListInDB();
     }
-    banImage(int.parse(lastBanned()));
+//    banImage(int.parse(lastBanned()));
   }
 
   readListFromDB() async {
@@ -53,9 +59,15 @@ class BannedImages {
 
     List<String> mList = (prefs.getStringList(kKeyBanned) ?? List<String>());
 
-    _bannedImages = mList.map((i) => int.parse(i)).toList();
+//    _bannedImages = mList.map((i) => int.parse(i)).toList();
+    Future.delayed(const Duration(milliseconds: 50), () {
+      //after 1 second, go to /home
+      _bannedImages = mList.map((i) => int.parse(i)).toList();
 
-    print(_bannedImages);
+      print(_bannedImages);
+    });
+
+//    print(_bannedImages);
   }
 
   saveListInDB() async {
