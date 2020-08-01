@@ -10,8 +10,11 @@ import 'package:wallpaper/services/web_images.dart' as WebImage;
 import 'package:wallpaper/widgets/InfoDialog.dart';
 import 'package:wallpaper/widgets/MyButton.dart';
 import 'package:wallpaper/services/set_wallpaper.dart';
+import 'package:wallpaper/widgets/error_404_widget.dart';
 import 'package:wallpaper/widgets/pexel_banner.dart';
 import 'package:wallpaper/services/date.dart';
+import 'package:wallpaper/widgets/reload_dialog.dart';
+import 'package:wallpaper/widgets/share_dialog.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -19,6 +22,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController textEditingController =
+      TextEditingController(); //to reach the code enter in the share screen
+
   Future<PhotosModel> photo;
 
   String lastImage;
@@ -30,19 +36,20 @@ class _HomeState extends State<Home> {
   String urlToDownload;
   int photoId;
 
-  void getPhoto() async {
+  void getPhoto({bool force = false}) async {
 //    photo = WebImage.getTrendingWallpaper();
     Date date = Date();
     if (date.isNewDay()) {
+      print('aca entro bro');
       setState(() {
         photo = WebImage.getSpecificWallpaper(topic: kTopic);
       });
     } else {
       CanNewPhoto canNewPhoto = CanNewPhoto();
-      if (canNewPhoto.canGetNewPhoto()) {
+      if (canNewPhoto.canGetNewPhoto() && force) {
         print(
             'This is not a new day, but also you can already get ${canNewPhoto.cantNewPhotos} awesome wallpapers...');
-
+        canNewPhoto.reduceCantPhotos();
         setState(() {
           photo = WebImage.getSpecificWallpaper(topic: kTopic);
         });
@@ -51,6 +58,7 @@ class _HomeState extends State<Home> {
         print('this is not a new day...');
         setState(() {
           lastImage = bannedImages.lastBanned();
+          print('the last image is: $lastImage');
           (photo == null)
               ? photo =
                   WebImage.getSpecificWallpaper(topic: kTopic, page: lastImage)
@@ -102,7 +110,15 @@ class _HomeState extends State<Home> {
                     );
                   } else if (snapshot.hasError) {
                     print('${snapshot.error}');
-                    return Text('${snapshot.error}');
+                    return Error404Widget(
+                        delay: 1,
+                        restartFunction: () {
+                          BannedImages bannedImages = BannedImages();
+                          setState(() {
+                            photo = WebImage.getSpecificWallpaper(
+                                topic: kTopic, page: bannedImages.lastBanned());
+                          });
+                        });
                   } else
                     return CircularProgressIndicator();
                 }),
@@ -120,14 +136,45 @@ class _HomeState extends State<Home> {
                   icon: Icons.refresh,
                   iconColor: Colors.black,
                   onTap: () {
-                    getPhoto();
+                    CanNewPhoto canNewPhoto = CanNewPhoto();
+                    Date date = Date();
+                    (date.isNewDay())
+                        ? getPhoto()
+                        : showDialog(
+                            context: context,
+                            builder: (context) => ReloadDialog(
+                              cantPhotos: canNewPhoto.cantNewPhotos,
+                              reloadPhoto: () async {
+                                setState(() {
+                                  getPhoto(force: true);
+                                });
+                              },
+                            ),
+                          );
                   },
                 ),
                 MyButton(
-                  backgroundColor: Colors.white,
-                  icon: Icons.share,
-                  iconColor: Colors.black,
-                ),
+                    backgroundColor: Colors.white,
+                    icon: Icons.share,
+                    iconColor: Colors.black,
+                    onTap: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (context) => ShareDialog(
+                          photoId: photoId,
+                          controller: textEditingController,
+                        ),
+                      );
+                      if (textEditingController.text.isNotEmpty) {
+                        print(textEditingController.text);
+
+                        setState(() {
+                          photo = WebImage.getSpecificWallpaperById(
+                              id: textEditingController.text);
+                        });
+                        textEditingController.clear();
+                      }
+                    }),
                 MyButton(
                   backgroundColor: Colors.white,
                   text: 'SET',

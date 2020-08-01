@@ -13,19 +13,19 @@ class MyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RawMaterialButton(
       onPressed: onTap,
-      elevation: 2.0,
+      elevation: 24.0,
       fillColor: backgroundColor,
       child: text == null
           ? Icon(
               icon,
-              size: 25.0,
+              size: 30.0,
               color: iconColor,
             )
           : Text(
               text,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 22,
+                fontSize: 26,
               ),
             ),
       padding: EdgeInsets.all(10.0),

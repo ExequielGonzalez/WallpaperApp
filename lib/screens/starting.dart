@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wallpaper/constants.dart';
 import 'package:wallpaper/services/banned_images.dart';
 import 'package:wallpaper/services/can_new_photo.dart';
+import 'package:wallpaper/services/date.dart';
 import 'package:wallpaper/services/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,25 +17,29 @@ class _StartingState extends State<Starting> {
   Widget build(BuildContext context) {
     return Center(
       child: Scaffold(
-//        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SpinKitFadingCube(
+//        backgroundColor: Colors.black,
+
+        body: Container(
+          decoration: kBackgroundGradient,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SpinKitFadingCube(
 //              color: Theme.of(context).accentColor,
-              color: Colors.blue,
-              size: 50.0,
-            ),
-            SizedBox(height: 30),
-            Text(
-              "Starting...",
-              style: TextStyle(
-                fontSize: 30,
-                letterSpacing: 2,
-                color: Colors.blue,
+                color: Colors.white,
+                size: 50.0,
               ),
-            )
-          ],
+              SizedBox(height: 30),
+              Text(
+                "Starting...",
+                style: TextStyle(
+                  fontSize: 30,
+                  letterSpacing: 2,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -56,14 +61,19 @@ class _StartingState extends State<Starting> {
   void setSharedPreferences() async {
     BannedImages bannedImages = BannedImages(); //Create the singleton
     CanNewPhoto canNewPhoto = CanNewPhoto();
+    Date date = Date();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     SharedPref sharedPref = SharedPref();
 
-//    sharedPreferences.remove('banned');
-    sharedPreferences.remove('cantNewPhotos');
+//    await sharedPreferences.remove(kKeyPhoto);
+//    await sharedPreferences.remove(kKeyBanned);
+//    await sharedPreferences.remove(kKeyNewPhotos);
+//    await sharedPreferences.remove(kKeyDate);
+//    await sharedPreferences.remove(kKeyPhoto);
 
-    if (!sharedPreferences.containsKey('cantNewPhotos')) {
-      sharedPref.addIntToSharedPreference('cantNewPhotos', kCantNewPhotos);
+    if (!sharedPreferences.containsKey(kKeyNewPhotos)) {
+      print('creando key $kKeyNewPhotos en DB');
+      sharedPref.addIntToSharedPreference(kKeyNewPhotos, kCantNewPhotos);
     }
   }
 }
