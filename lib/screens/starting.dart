@@ -6,6 +6,9 @@ import 'package:wallpaper/services/can_new_photo.dart';
 import 'package:wallpaper/services/date.dart';
 import 'package:wallpaper/services/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+
+import '../ads.dart';
 
 class Starting extends StatefulWidget {
   @override
@@ -50,6 +53,7 @@ class _StartingState extends State<Starting> {
 //    AdmobManager.initAdMob(); //se inician los ads
 
     super.initState();
+    FirebaseAdMob.instance.initialize(appId: Ads.appId);
     setSharedPreferences(); //I give time to read all the sharedPreferences
 
     Future.delayed(const Duration(seconds: 1), () {

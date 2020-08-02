@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "302035225016",
+    "firebase_url": "https://catwallpaper-5d04e.firebaseio.com",
+    "project_id": "catwallpaper-5d04e",
+    "storage_bucket": "catwallpaper-5d04e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302035225016:android:78253dbbdfe69110d0a74d",
+        "android_client_info": {
+          "package_name": "com.goingsmartly.wallpaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302035225016-4g6s03di68sue8v16iookh5cuk2bhsd4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.goingsmartly.wallpaper",
+            "certificate_hash": "6c4f424ba82829f43e5e849b5248632706dbe834"
+          }
+        },
+        {
+          "client_id": "302035225016-jskjhme7748snbj9i3lftm2vqsqfj0bo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-PrFj04SFBRFbT0TjgorAhjZFyWakOWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302035225016-jskjhme7748snbj9i3lftm2vqsqfj0bo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

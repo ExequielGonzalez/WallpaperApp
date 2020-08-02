@@ -50,7 +50,9 @@ class BannedImages {
       banImage(1211);
       banImage(2010);
       banImage(378);
-
+      banImage(1994);
+      banImage(1965);
+      banImage(589);
       banImage(1);
 
       saveListInDB();

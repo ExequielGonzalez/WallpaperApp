@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:wallpaper/ads.dart';
 import 'package:wallpaper/constants.dart';
 import 'package:wallpaper/services/banned_images.dart';
 import 'package:wallpaper/services/can_new_photo.dart';
@@ -15,6 +16,7 @@ import 'package:wallpaper/widgets/pexel_banner.dart';
 import 'package:wallpaper/services/date.dart';
 import 'package:wallpaper/widgets/reload_dialog.dart';
 import 'package:wallpaper/widgets/share_dialog.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -27,6 +29,7 @@ class _HomeState extends State<Home> {
 
   Future<PhotosModel> photo;
 
+  //Variables with information about the current photo
   String lastImage;
   int photoWidth;
   int photoHeight;
@@ -35,6 +38,49 @@ class _HomeState extends State<Home> {
   String photoUrl;
   String urlToDownload;
   int photoId;
+
+  //BannerAd
+  BannerAd _banner;
+  //reward Ad
+  bool _isRewardReady = false;
+
+  void _loadRewardedAd() {
+    RewardedVideoAd.instance
+        .load(adUnitId: Ads.rewardId, targetingInfo: MobileAdTargetingInfo());
+  }
+
+  _onRewardedEvent(RewardedVideoAdEvent event,
+      {String rewardType, int rewardAmount}) {
+    switch (event) {
+      case RewardedVideoAdEvent.loaded:
+        _isRewardReady = true;
+        break;
+      case RewardedVideoAdEvent.failedToLoad:
+        _isRewardReady = false;
+        break;
+
+      case RewardedVideoAdEvent.closed:
+        _isRewardReady = false;
+        _loadRewardedAd();
+        // TODO: Handle this case.
+        break;
+      case RewardedVideoAdEvent.rewarded:
+        CanNewPhoto canNewPhoto = CanNewPhoto();
+        print('rewardAmount: $rewardAmount');
+        canNewPhoto.addCantPhotos(1);
+        setState(() {
+          getPhoto(force: true);
+        });
+        break;
+      default:
+    }
+  }
+
+  void _loadBanner() {
+    _banner
+      ..load()
+      ..show(anchorType: AnchorType.bottom);
+  }
 
   void getPhoto({bool force = false}) async {
 //    photo = WebImage.getTrendingWallpaper();
@@ -76,6 +122,17 @@ class _HomeState extends State<Home> {
     super.initState();
 
     getPhoto();
+    _banner = BannerAd(adUnitId: Ads.bannerId, size: AdSize.banner);
+    _loadBanner();
+    RewardedVideoAd.instance.listener = _onRewardedEvent;
+    _loadRewardedAd();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _banner.dispose();
+    super.dispose();
   }
 
   @override
@@ -148,6 +205,9 @@ class _HomeState extends State<Home> {
                                 setState(() {
                                   getPhoto(force: true);
                                 });
+                              },
+                              watchAd: () {
+                                RewardedVideoAd.instance.show();
                               },
                             ),
                           );

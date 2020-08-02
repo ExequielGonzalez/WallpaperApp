@@ -17,7 +17,7 @@ class CanNewPhoto {
 
   int _cantNewPhotos;
 
-  int get cantNewPhotos => _cantNewPhotos + 1;
+  int get cantNewPhotos => _cantNewPhotos;
 
   bool canGetNewPhoto() {
     if (_cantNewPhotos > 0) {
@@ -38,8 +38,8 @@ class CanNewPhoto {
     sharedPref.addIntToSharedPreference(kKeyNewPhotos, _cantNewPhotos);
   }
 
-  void addCantPhotos() async {
-    _cantNewPhotos += 1;
+  void addCantPhotos(int cant) async {
+    _cantNewPhotos += cant;
     SharedPref sharedPref = SharedPref();
     sharedPref.addIntToSharedPreference(kKeyNewPhotos, _cantNewPhotos);
   }

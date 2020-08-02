@@ -6,7 +6,8 @@ import '../constants.dart';
 class ReloadDialog extends StatelessWidget {
   final int cantPhotos;
   final Function reloadPhoto;
-  ReloadDialog({this.cantPhotos, this.reloadPhoto});
+  final Function watchAd;
+  ReloadDialog({this.cantPhotos, this.reloadPhoto, this.watchAd});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class ReloadDialog extends StatelessWidget {
               Text(
                 (cantPhotos > 0)
                     ? 'You can get $cantPhotos new photos yet!'
-                    : "You can't get a new photo until tomorrow.",
+                    : "You can't get a new photo until tomorrow, or you can watch a little ad to get a new one!",
                 style: kDialogSubTitleStyle.copyWith(fontSize: 20),
                 textAlign: TextAlign.center,
               ),
@@ -65,7 +66,23 @@ class ReloadDialog extends StatelessWidget {
                           Navigator.pop(context);
                         },
                       )
-                    : null,
+                    : RaisedButton(
+                        color: Colors.grey,
+                        splashColor: Colors.green,
+                        elevation: 12,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                        child: Text(
+                          'Watch an Ad!',
+                          style: kDialogSubTitleStyle.copyWith(
+                              color: Colors.black),
+                        ),
+                        onPressed: () {
+                          watchAd();
+                          Navigator.pop(context);
+                        },
+                      ),
               )
             ],
           ),
