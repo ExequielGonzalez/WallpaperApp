@@ -62,7 +62,6 @@ class _HomeState extends State<Home> {
       case RewardedVideoAdEvent.closed:
         _isRewardReady = false;
         _loadRewardedAd();
-        // TODO: Handle this case.
         break;
       case RewardedVideoAdEvent.rewarded:
         CanNewPhoto canNewPhoto = CanNewPhoto();
