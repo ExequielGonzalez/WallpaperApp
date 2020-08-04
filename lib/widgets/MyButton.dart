@@ -6,30 +6,43 @@ class MyButton extends StatelessWidget {
   final IconData icon;
   final Function onTap;
   final String text;
+  final double size = 52;
+
   MyButton(
       {this.backgroundColor, this.iconColor, this.icon, this.onTap, this.text});
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: onTap,
-      elevation: 24.0,
-      fillColor: backgroundColor,
-      child: text == null
-          ? Icon(
-              icon,
-              size: 30.0,
-              color: iconColor,
-            )
-          : Text(
-              text,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 26,
-              ),
-            ),
-      padding: EdgeInsets.all(10.0),
+    return Material(
       shape: CircleBorder(),
+      child: InkResponse(
+        onTap: onTap,
+
+//      padding: EdgeInsets.all(10.0),
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            shape: BoxShape.circle,
+          ),
+          child: text == null
+              ? Icon(
+                  icon,
+                  size: 30.0,
+                  color: iconColor,
+                )
+              : Center(
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 26,
+                    ),
+                  ),
+                ),
+        ),
+      ),
     );
   }
 }
