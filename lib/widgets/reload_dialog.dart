@@ -43,7 +43,7 @@ class ReloadDialog extends StatelessWidget {
               Text(
                 (cantPhotos > 0)
                     ? 'You can get $cantPhotos new photos yet!'
-                    : "You can't get a new photo until tomorrow, or you can watch a little ad to get a new one!",
+                    : "You can't get a new photo until tomorrow, or you can watch a little video to get a new one!",
                 style: kDialogSubTitleStyle.copyWith(fontSize: 20),
                 textAlign: TextAlign.center,
               ),

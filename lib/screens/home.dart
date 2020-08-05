@@ -142,7 +142,7 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.85,
+            height: MediaQuery.of(context).size.height * 0.88,
             child: FutureBuilder(
                 future: photo,
                 builder: (context, snapshot) {
@@ -260,7 +260,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           Positioned(
-            bottom: MediaQuery.of(context).size.height * 0.115,
+            bottom: MediaQuery.of(context).size.height * 0.11,
             right: 0,
             child: PexelBanner(),
           )
