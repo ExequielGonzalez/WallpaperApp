@@ -19,7 +19,7 @@ class InfoDialog extends StatelessWidget {
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Container(
-        height: MediaQuery.of(context).size.height / 2.5,
+        height: MediaQuery.of(context).size.height / 2,
         decoration: BoxDecoration(
             color: Colors.black,
             shape: BoxShape.rectangle,

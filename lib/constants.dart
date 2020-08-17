@@ -4,8 +4,9 @@ String kAPI = '563492ad6f917000010000017070ee497ec64313a7552a5527b4c75f ';
 int kTotalPhotos = 2088;
 String kTopic = 'cat';
 int kCantNewPhotos = 3;
-String kTextShare =
-    """Hey, try this app! You can use the next code to see the same wallpaper as me.
+String kTextShare = """Hey, try this app!
+    https://play.google.com/store/apps/details?id=com.goingsmartly.wallpaper
+     You can use the next code to see the same wallpaper as me.
 You'll love it! """;
 
 String kKeyNewPhotos = 'cantNewPhotos';
